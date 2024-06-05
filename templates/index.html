@@ -26,7 +26,7 @@
 
         <div class="grid grid-cols-2 gap-6 w-full">
           <div
-            class="bg-white p-6 rounded-lg shadow-md col-span-2 sm:col-span-1"
+            class="bg-white p-6 rounded-lg shadow-md col-span-2 sm:{{ 'col-span-1' if risk is not none else 'col-span-2' }}"
           >
             <h2 class="text-xl font-semibold mb-4">MASUKKAN DATA</h2>
             <form method="POST" action="">
@@ -41,9 +41,13 @@
                       type="number"
                       class="w-full mt-1 px-4 py-2 border rounded-md bg-gray-100"
                       placeholder="Contoh: 25"
+                      value="{{ record['Age'] }}"
                       required
                     />
                   </div>
+                  {% if errors.Age %}
+                  <p class="text-red-500 text-xs italic">{{ errors.Age }}</p>
+                  {% endif %}
                 </div>
 
                 <div class="col-span-2 xl:col-span-1">
@@ -56,9 +60,15 @@
                       type="number"
                       class="w-full mt-1 px-4 py-2 border rounded-md bg-gray-100"
                       placeholder="Contoh: 120"
+                      value="{{ record['SystolicBP'] }}"
                       required
                     />
                   </div>
+                  {% if errors.SystolicBP %}
+                  <p class="text-red-500 text-xs italic">
+                    {{ errors.SystolicBP }}
+                  </p>
+                  {% endif %}
                 </div>
 
                 <div class="col-span-2 xl:col-span-1">
@@ -71,9 +81,15 @@
                       type="number"
                       class="w-full mt-1 px-4 py-2 border rounded-md bg-gray-100"
                       placeholder="Contoh: 80"
+                      value="{{ record['DiastolicBP'] }}"
                       required
                     />
                   </div>
+                  {% if errors.DiastolicBP %}
+                  <p class="text-red-500 text-xs italic">
+                    {{ errors.DiastolicBP }}
+                  </p>
+                  {% endif %}
                 </div>
 
                 <div class="col-span-2 xl:col-span-1">
@@ -87,9 +103,13 @@
                       step="0.1"
                       class="w-full mt-1 px-4 py-2 border rounded-md bg-gray-100"
                       placeholder="Contoh: 6,5"
+                      value="{{ record['BS'] }}"
                       required
                     />
                   </div>
+                  {% if errors.BS %}
+                  <p class="text-red-500 text-xs italic">{{ errors.BS }}</p>
+                  {% endif %}
                 </div>
 
                 <div class="col-span-2 xl:col-span-1">
@@ -103,9 +123,15 @@
                       step="0.1"
                       class="w-full mt-1 px-4 py-2 border rounded-md bg-gray-100"
                       placeholder="Contoh: 36,5"
+                      value="{{ record['BodyTemp'] }}"
                       required
                     />
                   </div>
+                  {% if errors.BodyTemp %}
+                  <p class="text-red-500 text-xs italic">
+                    {{ errors.BodyTemp }}
+                  </p>
+                  {% endif %}
                 </div>
 
                 <div class="col-span-2 xl:col-span-1">
@@ -118,9 +144,15 @@
                       type="number"
                       class="w-full mt-1 px-4 py-2 border rounded-md bg-gray-100"
                       placeholder="Contoh: 70"
+                      value="{{ record['HeartRate'] }}"
                       required
                     />
                   </div>
+                  {% if errors.HeartRate %}
+                  <p class="text-red-500 text-xs italic">
+                    {{ errors.HeartRate }}
+                  </p>
+                  {% endif %}
                 </div>
               </div>
 
@@ -141,19 +173,28 @@
             </form>
           </div>
 
+          {% if risk is not none %}
           <div
-            class="flex justify-center items-center col-span-2 sm:col-span-1 p-6 rounded-lg shadow-md bg-yellow-500"
+            class="flex justify-center items-center col-span-2 sm:col-span-1 p-6 rounded-lg shadow-md {% if risk == 'high risk' %} bg-red-500 {% elif risk == 'mid risk' %} bg-yellow-500 {% elif risk == 'low risk' %} bg-green-500 {% endif %}"
           >
             <div class="flex flex-col items-center text-center">
               <p class="text-white text-xl lg:text-3xl font-bold">
-                Risiko Tingkat Sedang
+                Risiko Tingkat {% if risk == 'high risk' %} Tinggi {% elif risk
+                == 'mid risk' %} Sedang {% elif risk == 'low risk' %} Rendah {%
+                endif %}
               </p>
               <p class="text-white lg:text-lg mt-2">
-                Risiko kesehatan ibu sedang. Mohon tetap waspada dan
-                konsultasikan dengan dokter untuk langkah-langkah pencegahan.
+                {% if risk == 'high risk' %} Risiko kesehatan ibu tinggi. Mohon
+                konsultasikan dengan dokter segera untuk mendapatkan penanganan
+                yang tepat. {% elif risk == 'mid risk' %} Risiko kesehatan ibu
+                sedang. Mohon tetap waspada dan konsultasikan dengan dokter
+                untuk langkah-langkah pencegahan. {% elif risk == 'low risk' %}
+                Risiko kesehatan ibu rendah. Tetap jaga kesehatan dan lakukan
+                pemeriksaan rutin sesuai saran dokter. {% endif %}
               </p>
             </div>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>
