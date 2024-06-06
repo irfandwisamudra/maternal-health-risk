@@ -34,7 +34,7 @@ def convert_risk(pred):
     elif pred == "mid risk":
         return 2
 
-# Load the models
+# Load models
 c1_load = pickle.load(open('c1.sav', 'rb'))
 c2_load = pickle.load(open('c2.sav', 'rb'))
 meta_load = pickle.load(open('meta.sav', 'rb'))
@@ -68,15 +68,15 @@ def index():
                 record["HeartRate"],
             ]
 
-            # Make predictions
+            # Membuat prediksi dari model
             p1_load = c1_load.predict([input_data])
             p2_load = c2_load.predict([input_data])
 
-            # Convert the predictions to numerical values
+            # Konversi prediksi ke nilai numerik
             p1 = convert_risk(p1_load[0])
             p2 = convert_risk(p2_load[0])
 
-            # Make predictions
+            # Membuat prediksi dari model meta
             meta_pred = meta_load.predict([[p1, p2]])
 
             risk = meta_pred[0]
