@@ -3,48 +3,84 @@ import pickle, os
 
 def validasi_inputan(form_data):
     errors = {}
+
     if not form_data.get("Age"):
         errors["Age"] = "Umur tidak boleh kosong."
+    else:
+        try:
+            age = int(form_data.get("Age"))
+        except ValueError:
+            errors["Age"] = "Umur harus berupa angka."
+
     if not form_data.get("SystolicBP"):
         errors["SystolicBP"] = "Tekanan darah tinggi tidak boleh kosong."
+    else:
+        try:
+            systolic_bp = int(form_data.get("SystolicBP"))
+        except ValueError:
+            errors["SystolicBP"] = "Tekanan darah tinggi harus berupa angka."
+
     if not form_data.get("DiastolicBP"):
         errors["DiastolicBP"] = "Tekanan darah rendah tidak boleh kosong."
+    else:
+        try:
+            diastolic_bp = int(form_data.get("DiastolicBP"))
+        except ValueError:
+            errors["DiastolicBP"] = "Tekanan darah rendah harus berupa angka."
+
     if not form_data.get("BS"):
         errors["BS"] = "Level gula darah tidak boleh kosong."
+    else:
+        try:
+            bs = float(form_data.get("BS"))
+        except ValueError:
+            errors["BS"] = "Level gula darah harus berupa angka."
+
     if not form_data.get("BodyTemp"):
         errors["BodyTemp"] = "Suhu tubuh tidak boleh kosong."
+    else:
+        try:
+            body_temp = float(form_data.get("BodyTemp"))
+        except ValueError:
+            errors["BodyTemp"] = "Suhu tubuh harus berupa angka."
+
     if not form_data.get("HeartRate"):
         errors["HeartRate"] = "Detak Jantung tidak boleh kosong."
+    else:
+        try:
+            heart_rate = int(form_data.get("HeartRate"))
+        except ValueError:
+            errors["HeartRate"] = "Detak Jantung harus berupa angka."
+
     return errors
 
 def validate_data(record):
     errors = {}
-    if record["Age"] <= 10 or record["Age"] >= 70:
+    if record["Age"] < 10 or record["Age"] > 70:
         errors["Age"] = "Umur harus diantara 10 dan 70 tahun"
 
-    if record["SystolicBP"] <= 70 or record["SystolicBP"] >= 160:
+    if record["SystolicBP"] < 70 or record["SystolicBP"] > 160:
         errors["SystolicBP"] = "Tekanan darah tinggi harus diantara 70 dan 160 mmHg."
 
-    if record["DiastolicBP"] <= 49 or record["DiastolicBP"] >= 100:
+    if record["DiastolicBP"] < 49 or record["DiastolicBP"] > 100:
         errors["DiastolicBP"] = "Tekanan darah rendah harus diantara 49 dan 100 mmHg."
 
-    if record["SystolicBP"] <= record["DiastolicBP"]:
+    if record["SystolicBP"] < record["DiastolicBP"]:
         errors["BP"] = "Tekanan darah tinggi harus lebih tinggi dari tekanan darah rendah."
 
-    if record["BS"] <= 6.0 or record["BS"] >= 19.0:
+    if record["BS"] < 6.0 or record["BS"] > 19.0:
         errors["BS"] = "Level gula darah harus diantara 6.0 dan 19.0 mmol/L."
 
-    if record["BodyTemp"] <= 90 or record["BodyTemp"] >= 110:
+    if record["BodyTemp"] < 90 or record["BodyTemp"] > 110:
         errors["BodyTemp"] = "Suhu tubuh harus diantara 90 dan 110 derajat fahrenheit."
 
-    if record["HeartRate"] <= 60 or record["HeartRate"] >= 90:
+    if record["HeartRate"] < 60 or record["HeartRate"] > 90:
         errors["HeartRate"] = "Detak Jantung harus diantara 60 dan 90 bpm."
 
     return errors
 
 # Load models
 classifier_load = pickle.load(open('stacking_classifier_model.sav', 'rb'))
-
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(24)
