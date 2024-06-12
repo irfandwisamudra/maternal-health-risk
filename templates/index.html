@@ -10,7 +10,7 @@
       rel="stylesheet"
     />
   </head>
-  <body class="bg-gray-800">
+  <body class="bg-[url('{{url_for("static", filename="maternal-health-risk.jpg")}}')] bg-cover bg-right bg-no-repeat">
     <div class="container mx-auto">
       <div
         class="px-4 py-6 inline-flex flex-col justify-center items-center w-full min-h-screen"
@@ -26,7 +26,7 @@
 
         <div class="grid grid-cols-2 gap-6 w-full">
           <div
-            class="bg-white p-6 rounded-lg shadow-md col-span-2 sm:{{ 'col-span-1' if risk is not none else 'col-span-2' }}"
+            class="bg-white p-6 rounded-lg shadow-md col-span-2 sm:{{ 'col-span-1' if risk is not none else 'col-span-2' }} text-justify"
           >
             <h2 class="text-xl font-semibold mb-4">MASUKKAN DATA</h2>
             <form method="POST" action="">
@@ -114,15 +114,20 @@
 
                 <div class="col-span-2 xl:col-span-1">
                   <label class="block text-sm font-medium text-zinc-700"
-                    >Suhu Tubuh (°C)</label
+                    >Suhu Tubuh (°F)</label
                   >
+                  <p class="text-xs text-gray-500">
+                    Note: Gunakan termometer Fahrenheit, jika menggunakan
+                    termometer Celsius, konversikan ke Fahrenheit.
+                  </p>
+                  <p class="text-xs text-gray-500">Konversi ke Fahrenheit: (Celsius * 9/5) + 32</p>
                   <div class="mt-1 flex rounded-md shadow-sm">
                     <input
                       name="BodyTemp"
                       type="number"
                       step="0.1"
                       class="w-full mt-1 px-4 py-2 border rounded-md bg-gray-100"
-                      placeholder="Contoh: 36.5"
+                      placeholder="Contoh: 97.7"
                       value="{{ record['BodyTemp'] }}"
                       required
                     />
