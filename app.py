@@ -26,18 +26,17 @@ def validate_data(record):
 
     return errors
 
-def convert_risk(pred):
-    if pred == "high risk":
-        return 0
-    elif pred == "low risk":
-        return 1
-    elif pred == "mid risk":
-        return 2
+# def convert_risk(pred):
+#     if pred == "high risk":
+#         return 0
+#     elif pred == "low risk":
+#         return 1
+#     elif pred == "mid risk":
+#         return 2
 
 # Load models
-c1_load = pickle.load(open('c1.sav', 'rb'))
-c2_load = pickle.load(open('c2.sav', 'rb'))
-meta_load = pickle.load(open('meta.sav', 'rb'))
+classifier_load = pickle.load(open('stacking_classifier_model.sav', 'rb'))
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(24)
@@ -69,17 +68,7 @@ def index():
             ]
 
             # Membuat prediksi dari model
-            p1_load = c1_load.predict([input_data])
-            p2_load = c2_load.predict([input_data])
-
-            # Konversi prediksi ke nilai numerik
-            p1 = convert_risk(p1_load[0])
-            p2 = convert_risk(p2_load[0])
-
-            # Membuat prediksi dari model meta
-            meta_pred = meta_load.predict([[p1, p2]])
-
-            risk = meta_pred[0]
+            risk  = classifier_load.predict([input_data])
 
     return render_template('index.html', risk=risk, errors=errors, record=request.form)
 
