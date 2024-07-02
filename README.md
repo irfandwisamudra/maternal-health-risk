@@ -24,7 +24,7 @@ This is a simple web application to predict maternal health risk based on variou
 
 2. Install the required Python packages:
    ```bash
-   pip install flask
+   pip install -r requirements.txt
    ```
 
 ## Running the Application
